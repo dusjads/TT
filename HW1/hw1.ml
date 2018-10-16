@@ -5,7 +5,7 @@ let rec peano_of_int x = if x == 0 then Z else S (peano_of_int (x - 1))
 
 (*val int_of_peano: peano -> int;; *)
 let rec int_of_peano p = match p with
-    Z -> 0
+  | Z -> 0
   | S x -> 1 + int_of_peano x;;
 
 (*val inc: peano -> peano;;*)
@@ -81,9 +81,9 @@ let lambda_of_string str =
     if !cur < String.length str - 1 then 
       cur := !cur + 1 
     else failwith "Out of range" in
-  let pass_next x =  
+  let pass_next x =
     if cur_char() != x then 
-      failwith ("Expected " ^ (String.make 1 (cur_char())) ^  ", found " ^ (String.make 1 x)) 
+      failwith ("Expected " ^ (String.make 1 x) ^  ", found " ^ (String.make 1 (cur_char()))) 
     else (inc_cur()) in
   
   let var_name_part x = (('a' <= x) && (x <= 'z')) || (('0' <= x) && (x <= '9')) || (x = '\'') in
@@ -108,7 +108,8 @@ let lambda_of_string str =
     if ((!cur = String.length str - 1) || (cur_char() = ')')) then
       left
     else (
-      pass_next ' ';
+      if cur_char() == ' ' then
+        pass_next ' ';
       match cur_char() with
       | '\\' -> (let right = parse_abs() in
                 parse_part (App(left, right)))
