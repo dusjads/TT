@@ -47,12 +47,12 @@ let rec is_normal_form lmbd = match lmbd with
 let unique_name = Stream.from (fun i -> Some ("var_" ^ string_of_int i));;
 
 let rec subst theta lmbd x = match lmbd with
-  | Var a     ->  if a = x then 
-                    theta
-                  else lmbd
-  | Abs(a, lm) ->  if a = x then 
-                    lmbd
-                  else Abs(a, subst theta lm x)
+  | Var a            -> if a = x then 
+                          theta
+                        else lmbd
+  | Abs(a, lm)       -> if a = x then 
+                          lmbd
+                        else Abs(a, subst theta lm x)
   | App(left, right) ->  App(subst theta left x, subst theta right x);;
 
 let is_alpha_equivalent left right =
@@ -79,16 +79,17 @@ let rec change_vars lmbd map = match lmbd with
 
 let normal_beta_reduction lmbd =
   let rec reduction_rec lmbd = match lmbd with
-    | Var a             -> (false, lmbd)
-    | Abs(a, lm)        -> let (helper, new_lm) = reduction_rec lm in
-                                                    (helper, Abs(a, new_lm))
-    | App(Abs(a, b), c) -> (true, subst c b a)
-    | App(left, right)  -> let (helper, new_left) = reduction_rec left in
-                                                      if helper then 
-                                                        (helper, App(new_left, right))
-                                                      else let (helper, new_right) = reduction_rec right in
-                                                        (helper, App(left, new_right))
-  in let (helper, ans) = reduction_rec (change_vars lmbd StringMap.empty) in
+    | Var a             ->  (false, lmbd)
+    | Abs(a, lm)        ->  let (helper, new_lm) = reduction_rec lm in
+                              (helper, Abs(a, new_lm))
+    | App(Abs(a, b), c) ->  (true, subst c b a)
+    | App(left, right)  ->  let (helper, new_left) = reduction_rec left in
+                              if helper then 
+                                (helper, App(new_left, right))
+                              else let (helper, new_right) = reduction_rec right in
+                                (helper, App(left, new_right))
+  in
+  let (helper, ans) = reduction_rec (change_vars lmbd StringMap.empty) in
   ans;;
 
 (* Свести выражение к нормальной форме с использованием нормального
@@ -128,9 +129,7 @@ let rec reduce_to_normal_form lmbd =
         )
     | Appref(left, right) -> (match !left with         
         | Absref(x, y) -> let new_name = (Stream.next unique_name) in
-                            lmbdref := !(lambda_to_lambda_ref (
-                                  change_vars (lambda_ref_to_lambda y) (StringMap.singleton x new_name))
-                                  );
+                            lmbdref := !(lambda_to_lambda_ref (change_vars (lambda_ref_to_lambda y) (StringMap.singleton x new_name)));
                             subst_ref right lmbdref new_name;
                             Some lmbdref
         | _            -> match reduce left with

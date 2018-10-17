@@ -14,35 +14,35 @@ let inc x = S x;;
 exception Dec_zero;;
 
 let dec x = match x with
-  Z -> raise Dec_zero
+  | Z -> raise Dec_zero
   | S p -> p;;
 
 let rec add x y = match y with
-  Z -> x
+  | Z -> x
   | S p -> S (add x p);;   
 
 let rec sub x y = match y with
-  Z -> x
+  | Z -> x
   | S p -> dec (sub x p);;
 
 let rec mul x y = match y with
-  Z -> Z
+  | Z -> Z
   | S Z -> x
   | S p -> add (mul x p) x;;
 
 let rec power x y = match y with
-  Z -> S Z
+  | Z -> S Z
   | S Z -> x
   | S p -> mul (power x p) x;;
 
 (*--------------------list-------------------------*)
 
 let rec append arr x = match arr with
-  [] -> [x]
+  | [] -> [x]
   | h::tail -> h:: append tail x;;
 
 let rec rev arr = match arr with
-  [] -> []
+  | [] -> []
   | h::tail -> append (rev tail) h;;
 
 (*---------------------merge sort------------------*)
@@ -69,7 +69,7 @@ let rec merge_sort = function
 
 let rec string_of_lambda l = 
   match l with
-    Var(x) -> x
+  | Var(x) -> x
   | App(a, b) -> "(" ^ string_of_lambda a ^ " " ^ string_of_lambda b ^ ")"
   | Abs(s, e) -> "(\\" ^ s ^ "." ^ string_of_lambda e ^ ")";;
 
