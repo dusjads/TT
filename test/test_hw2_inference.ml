@@ -55,12 +55,12 @@ test "algorithm_w"
   (*~compare: system_to_equation_compare*)
   ~string_of: (fun a -> a)
   (Stream.of_list [
-      { input = test1; output = "var0 -> var0" };
-      { input = test2; output = "(var17 -> var17) -> var17 -> var17" };
-      { input = test3; output = "var31 -> var31" };
-      { input = test4; output = "var34 -> var34" };
-      { input = test5; output = "var38 -> var38" };
-      { input = test6; output = "var45" };
+      { input = test1; output = "var_0 -> var_0" };
+      { input = test2; output = "(var_17 -> var_17) -> var_17 -> var_17" };
+      { input = test3; output = "var_31 -> var_31" };
+      { input = test4; output = "var_34 -> var_34" };
+      { input = test5; output = "var_38 -> var_38" };
+      { input = test6; output = "var_40" };
       { input = test7; output = "" };
-      { input = test8; output = "(var48 -> var50) -> var50" };
+      { input = test8; output = "(var_48 -> var_50) -> var_50" };
     ]);;

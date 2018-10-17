@@ -57,7 +57,8 @@ let solve_system system =
   let rec contains x term = match term with
     | (Var a) -> if a = x then 1 else 0
     | (Fun (f, lst)) -> (contains_lst x lst) lor (if f = x then 2 else 0)
-  and contains_lst x lst = match lst with
+  and 
+  contains_lst x lst = match lst with
     | [] -> 0
     | (head :: tail) -> (contains x head) lor (contains_lst x tail)
   in
@@ -90,7 +91,7 @@ let solve_system system =
   let rec get_answer answer new_ans = match answer with
     | [] -> new_ans
     | ((Var a, right) :: tail) -> get_answer tail ((a, right) :: new_ans) 
-    | _ -> failwith "System is incorrect" 
+    | _ -> failwith "System is incorrect." 
   in
   try 
     let ans = robinson system StringSet.empty in
